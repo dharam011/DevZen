@@ -1,0 +1,1606 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,body , #root{
+  height: 100%;
+  width: 100%;
+  background-color:#111;
+}
+main{
+  margin-top: 0;
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+ 
+
+}
+.top{
+  
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+ 
+}
+
+.top h1{
+  font-family: monospace;
+  font-size: 3em;
+  color: white;
+  
+}
+.content{
+  
+  width: 100%;
+ margin-top: 1em;
+  display: flex;
+  gap: 2rem;
+  position: relative;
+}
+.content .left , .content .right{
+    height: 100%;
+    flex-basis: 50%;
+    border-radius: 10px;
+  
+  }
+  .content .left{
+    background-color:  rgb(28, 28, 28);
+    position: relative;
+  }
+
+  .left .code, .code pre , .code pre code {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    border-radius: 10px;
+    background-color: rgb(28, 28, 28);
+  }
+  .content .right{
+    background-color: #13191c;
+    padding: 1.5rem;
+    padding-left: 2rem;
+  overflow: hidden;
+  overflow-y: auto;
+  font-size: 1.2rem;
+  border: 1px solid rgb(38, 38, 94);
+  }
+
+  .buttons {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .left button {
+    position: static;
+    font-size: 1.2em;
+    user-select: none;
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+    }
+    .content .left, .content .right {
+      height: 40%;
+    }
+  }
+
+.language-selector {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.language-selector select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid #646cff;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.language-selector select:hover {
+  border-color: #535bf2;
+}
+
+.content .left .code {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: auto;
+  border-radius: 10px;
+  background-color: rgb(28, 28, 28);
+}
+
+.code pre, .code pre code {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  background-color: rgb(28, 28, 28);
+}
+
+.code > div {
+  min-height: 100%;
+  max-height: calc(100% - 4rem);
+  overflow: auto !important;
+}
+
+.code::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+
+.code::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.code::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Hide scrollbars but keep scrolling functionality */
+.content .left .code,
+.content .right {
+  -ms-overflow-style: none;  /* Internet Explorer and Edge */
+  scrollbar-width: none;     /* Firefox */
+  overflow: auto;            /* Keep scrolling functionality */
+}
+
+/* Hide WebKit scrollbars (Chrome, Safari, newer versions of Opera) */
+.content .left .code::-webkit-scrollbar,
+.content .right::-webkit-scrollbar {
+  display: none;
+}
+
+/* Make sure the editor container also has hidden scrollbars */
+.code > div {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: auto !important;
+}
+
+.code > div::-webkit-scrollbar {
+  display: none;
+}
+
+/* Typewriter effect styles */
+.typewriter {
+  position: relative;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: #646cff;
+  margin-left: 2px;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Loading state and placeholder styles */
+.loading, .placeholder {
+  color: #a0a0a0;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
+/* Disable buttons during loading */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Updated layout styles with separation */
+:root {
+  --border-color: #444;
+  --panel-bg: #1a1a1a;
+  --panel-header-bg: #222;
+  --separator-gap: 8px;
+  --primary-color: #646cff;
+  --primary-hover: #535bf2;
+  --chat-user-bg: #3a7bd5;
+  --chat-assistant-bg: #333;
+  --resizer-color: #555;
+  --resizer-hover: #777;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #0f0f0f;
+  color: #f8f8f8;
+}
+
+.top {
+  width: 100%;
+  padding: 10px 20px;
+  
+
+}
+
+.content-container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+/* Panel styles */
+.left-panel, .right-panel, .chat-panel {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Resizer styles */
+.resizer {
+  width: 6px;
+  height: 100%;
+  background-color: #333;
+  cursor: col-resize;
+  z-index: 1;
+}
+
+.resizer:hover {
+  background-color: #444;
+}
+
+/* Hide content overflow */
+.code, .chat-messages, .right-panel {
+  overflow: auto;
+}
+
+/* Panel header styling shared by all panels */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: var(--panel-header-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ddd;
+}
+
+/* Left panel - Code Editor */
+.left-panel {
+  height: 100%;
+  position: relative;
+  background-color: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.left-panel .code {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.left-panel .code::-webkit-scrollbar {
+  display: none;
+}
+
+/* Right panel - Results */
+.right-panel {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--panel-bg);
+}
+
+.results-content {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.results-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Chat panel - Enhanced ChatGPT-like */
+.chat-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--panel-bg);
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clear-chat {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.clear-chat:hover {
+  color: #ddd;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: #1a1a1a;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 20px;
+}
+
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.chat-message .avatar {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 0.9em;
+  color: #aaa;
+}
+
+.chat-message .message-content {
+  padding: 10px 15px;
+  border-radius: 8px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.chat-message.user .message-content {
+  background-color: var(--chat-user-bg);
+  color: white;
+}
+
+.chat-message.assistant .message-content {
+  background-color: var(--chat-assistant-bg);
+  color: white;
+}
+
+/* Enhanced chat input */
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--panel-header-bg);
+}
+
+.chat-input textarea {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: white;
+  resize: none;
+  height: 45px;
+  min-height: 45px;
+  max-height: 150px;
+  line-height: 1.5;
+}
+
+.chat-input textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.chat-input button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: var(--primary-hover);
+}
+
+.send-icon {
+  font-size: 18px;
+}
+
+/* Language selector */
+.language-selector select {
+  padding: 5px 10px;
+  background-color: #2a2a2a;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.buttons {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.buttons button {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons button:hover {
+  background-color: var(--primary-hover);
+}
+
+.buttons button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.buttons button .icon {
+  font-size: 16px;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  padding: 5px;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 2px;
+  display: inline-block;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Loading and placeholder states */
+.loading, .placeholder {
+  color: #888;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  text-align: center;
+}
+
+/* Improve the code editor appearance */
+.left-panel .code > div {
+  border-radius: 0 !important;
+  min-height: 100%;
+}
+
+/* Code block styling in chat and results */
+pre {
+  background-color: #1e1e1e !important;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow: auto;
+  margin: 0.5rem 0;
+}
+
+code {
+  font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+}
+
+/* Markdown styling in chat */
+.message-content p {
+  margin: 0 0 0.8em 0;
+}
+
+.message-content p:last-child {
+  margin-bottom: 0;
+}
+
+.message-content ul, .message-content ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.message-content a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.message-content a:hover {
+  text-decoration: underline;
+}
+
+/* Chat panel styles - only the new panel */
+.chat {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+  overflow: hidden;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #444;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 5px 0 0 5px;
+  background-color: #2a2a2a;
+  color: white;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.chat-message {
+  max-width: 85%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background-color: #3a7bd5;
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+.chat-message.assistant {
+  align-self: flex-start;
+  background-color: #333;
+  color: white;
+  border-bottom-left-radius: 5px;
+}
+
+.typing-indicator {
+  display: flex;
+  padding: 5px;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 2px;
+  display: inline-block;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Ensure the content area is set up for resizable panels */
+.content {
+  display: flex; 
+  width: 100%;
+  height: calc(100vh - 70px); /* Adjust based on your header height */
+  overflow: hidden;
+  padding: 0;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+/* Left, right, and chat panels */
+.left, .right, .chat {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444; /* Light border for separation */
+}
+
+/* Resize handles */
+.resize-handle {
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  background-color: transparent; /* Make handles invisible but functional */
+  z-index: 10;
+}
+
+/* Hide scrollbars while maintaining functionality */
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar,
+.chat::-webkit-scrollbar {
+  display: none;
+}
+
+.left, .right, .chat {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Chat panel styles (only if you didn't have these already) */
+.chat {
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #444;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 5px 0 0 5px;
+  background-color: #2a2a2a;
+  color: white;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.chat-message {
+  max-width: 85%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background-color: #3a7bd5;
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+.chat-message.assistant {
+  align-self: flex-start;
+  background-color: #333;
+  color: white;
+  border-bottom-left-radius: 5px;
+}
+
+.typing-indicator {
+  display: flex;
+  padding: 5px;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 2px;
+  display: inline-block;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Main container */
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: #0f0f0f;
+}
+
+/* Top header */
+.top {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Content area with resizable panels */
+.content {
+  display: flex; 
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1a1a1a;
+}
+
+/* Left, right, and chat panels */
+.left, .right, .chat {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+/* Resize handles */
+.resize-handle {
+  width: 8px;
+  height: 100%;
+  background-color: #333;
+  cursor: col-resize;
+  transition: background-color 0.2s;
+}
+
+.resize-handle:hover {
+  background-color: #555;
+}
+
+/* Hide scrollbars while maintaining functionality */
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar,
+.chat::-webkit-scrollbar {
+  display: none;
+}
+
+.left, .right, .chat {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Adjust code editor container */
+.code {
+  height: calc(100% - 90px) !important; /* Adjust based on your buttons' height */
+  position: relative;
+  margin-bottom: 50px;
+}
+
+/* Buttons positioning */
+.buttons {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Chat panel height adjustments */
+.chat {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.chat-input {
+  padding: 10px;
+  border-top: 1px solid #333;
+}
+
+/* Make sure content stays within viewport */
+main {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Make content take remaining height without scrolling */
+.content {
+  display: flex; /* Only change to allow resizing */
+  height: calc(100vh - 70px); /* Adjust based on your header height */
+  overflow: hidden;
+}
+
+/* Resize handles */
+.resize-handle {
+  width: 8px;
+  height: 100%;
+  background-color: #333;
+  cursor: col-resize;
+}
+
+/* Add these styles to remove the white line on focus */
+
+/* Remove focus outline from code editor */
+.code textarea,
+.code pre,
+.code div,
+.code * {
+  outline: none !important; /* Remove outline on focus */
+  border-color: #333 !important; /* Keep borders consistent with your theme */
+}
+
+/* Also ensure the editor container doesn't show outlines */
+.code > div {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix any potential issues with the editor highlighting */
+.code pre {
+  background: transparent !important;
+}
+
+/* Only style the actual editor borders when actively editing */
+.code textarea:focus {
+  border-color: #555 !important;
+}
+
+/* Mobile-friendly styles that maintain decent proportions */
+
+/* Base styles remain the same */
+.content {
+  display: flex;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+  padding: 0;
+  gap: 8px;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+  /* Main container becomes scrollable */
+  main {
+    height: auto;
+    overflow-y: auto;
+  }
+  
+  /* Content area becomes a column layout */
+  .content {
+    flex-direction: column; 
+    height: auto;
+    min-height: 100vh; /* Use at least full viewport height */
+    overflow: visible; /* Allow content to extend beyond */
+  }
+  
+  /* Left panel (code editor) */
+  .left {
+    width: 100% !important; /* Override inline styles */
+    height: auto; 
+    min-height: 300px; /* More reasonable height for code editing */
+    margin-bottom: 15px;
+  }
+  
+  /* Code editor inside left panel */
+  .code {
+    height: 300px !important; /* Taller editor on mobile */
+  }
+  
+  /* Right panel (results) */
+  .right {
+    width: 100% !important;
+    height: auto;
+    min-height: 250px; /* Shorter than code editor but still usable */
+    margin-bottom: 15px;
+  }
+  
+  /* Chat panel */
+  .chat {
+    width: 100% !important;
+    height: 300px; /* Fixed height that works well for chat */
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Chat messages area */
+  .chat-messages {
+    flex: 1;
+    max-height: 250px; /* Limit height while keeping scrollable */
+    overflow-y: auto;
+  }
+  
+  /* Hide resize handles on mobile */
+  .resize-handle {
+    display: none;
+  }
+  
+  /* Make buttons more touch-friendly but keep them in place */
+  .buttons {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .buttons button {
+    padding: 10px 15px;
+    margin-left: 8px;
+  }
+}
+
+/* For very small screens (phones) */
+@media (max-width: 480px) {
+  .content {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  /* Adjust heights for even smaller screens */
+  .left {
+    min-height: 250px;
+  }
+  
+  .code {
+    height: 200px !important;
+  }
+  
+  .right, .chat {
+    min-height: 180px;
+  }
+  
+  /* Center smaller elements */
+  .buttons {
+    justify-content: center;
+  }
+  
+  /* Adjust font sizes */
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Fix scrolling in the code editor */
+
+/* Make sure the code container allows scrolling */
+.code {
+  position: relative;
+  overflow: auto !important; /* Force scrolling */
+  height: calc(100% - 50px) !important; /* Leave space for buttons */
+}
+
+/* Ensure the editor component takes full height and allows scrolling */
+.code > div {
+  min-height: 100% !important;
+  height: auto !important; /* Allow height to grow */
+  overflow: visible !important; /* Let content overflow for scrolling */
+}
+
+/* Style scrollbars for better visibility */
+.code::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.code::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* Make sure focus follows cursor position */
+.code textarea {
+  overflow: auto !important;
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+/* Fix textarea and pre alignment */
+.code pre, .code textarea {
+  padding: 10px !important;
+  min-height: 100% !important;
+}
+
+/* Fix react-simple-code-editor specifics */
+.code > div > pre, .code > div > textarea {
+  white-space: pre !important;
+  overflow: visible !important;
+}
+
+/* Make editor auto-scroll to cursor position */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #ddd }
+}
+
+/* Improved scrolling for code editor */
+
+/* Make sure the code container handles scrolling properly */
+.code {
+  position: relative;
+  overflow: hidden !important; /* Hide scrolling at container level */
+  height: calc(100% - 50px) !important; /* Leave space for buttons */
+}
+
+/* Make textarea the main scrolling element */
+.code textarea {
+  overflow: auto !important;
+  white-space: pre !important;
+  tab-size: 2 !important;
+  -moz-tab-size: 2 !important;
+  scrollbar-width: thin !important;
+  scroll-behavior: smooth !important; /* Smooth scrolling */
+}
+
+/* Ensure both pre and textarea scroll together */
+.code pre, .code textarea {
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+}
+
+/* Fix editor container */
+.code > div {
+  height: 100% !important;
+  overflow: hidden !important; /* Hide overflow at this level */
+}
+
+/* Style the cursor for better visibility */
+.editor-textarea::selection {
+  background-color: rgba(100, 108, 255, 0.3) !important;
+}
+
+/* Style scrollbars */
+.code textarea::-webkit-scrollbar,
+.code pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code textarea::-webkit-scrollbar-thumb,
+.code pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.code textarea::-webkit-scrollbar-track,
+.code pre::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for scrollability in code editor */
+
+/* Code container - make sure it's positioned correctly */
+.left .code {
+  position: relative;
+  height: calc(100% - 60px) !important; /* Adjust for buttons */
+  overflow: visible !important; /* Let the content inside handle scrolling */
+}
+
+/* Editor styling - ensure scrolling works */
+.code > div {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: auto !important; /* Make sure this element scrolls */
+}
+
+/* Editor textarea styles - force scrollability */
+.code textarea {
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch !important; /* For mobile */
+}
+
+/* Force editor content to be scrollable */
+.code pre, 
+.code textarea {
+  overflow: auto !important;
+  max-height: none !important; /* Remove any max-height restrictions */
+  min-height: 100% !important;
+}
+
+/* Fix any potential scroll interference */
+.code * {
+  overflow: visible;
+}
+
+/* Make sure scrollbars are visible */
+.code::-webkit-scrollbar,
+.code > div::-webkit-scrollbar,
+.code textarea::-webkit-scrollbar,
+.code pre::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+  display: block !important;
+}
+
+.code::-webkit-scrollbar-thumb,
+.code > div::-webkit-scrollbar-thumb,
+.code textarea::-webkit-scrollbar-thumb,
+.code pre::-webkit-scrollbar-thumb {
+  background: #666 !important;
+  border-radius: 5px !important;
+}
+
+/* Custom Editor Styling */
+
+.code-editor-container {
+  position: relative;
+  height: calc(100% - 60px);
+  width: 100%;
+  margin-bottom: 60px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  overflow: hidden;
+  background-color: #1c1c1c;
+}
+
+.code-highlighting,
+.code-textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-family: 'Fira Code', 'Fira Mono', monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: pre;
+  overflow: auto;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+
+.code-highlighting {
+  z-index: 1;
+  color: #f8f8f8;
+  pointer-events: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  background-color: transparent;
+}
+
+.code-highlighting::-webkit-scrollbar {
+  display: none;
+}
+
+.code-textarea {
+  z-index: 2;
+  color: transparent;
+  background-color: transparent;
+  caret-color: white;
+  resize: none;
+  border: none;
+  outline: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.code-textarea::-webkit-scrollbar {
+  display: none;
+}
+
+/* Make sure text aligns perfectly */
+.code-highlighting,
+.code-textarea {
+  tab-size: 2;
+  -moz-tab-size: 2;
+  word-spacing: normal;
+  letter-spacing: normal;
+}
+
+/* Ensure container heights adjust properly */
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.language-selector {
+  margin-bottom: 10px;
+}
+
+.buttons {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Mobile-specific fixes for the code editor */
+
+@media (max-width: 768px) {
+  /* Ensure the editor container has adequate height */
+  .code-editor-container {
+    height: 250px; /* Fixed height on mobile */
+    margin-bottom: 70px; /* More space for buttons */
+  }
+  
+  /* Improve touch interaction with textarea */
+  .code-textarea {
+    font-size: 14px; /* Slightly smaller font */
+    padding: 12px; /* Larger padding for better touch targets */
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* Remove tap highlight */
+  }
+  
+  /* Fix iOS-specific issues */
+  .code-textarea, .code-highlighting {
+    -webkit-user-select: auto; /* Allow text selection */
+    user-select: auto;
+    -webkit-touch-callout: default; /* Allow default touch behavior */
+  }
+  
+  /* Ensure the cursor is visible */
+  .code-textarea {
+    caret-color: #fff; /* Brighter cursor */
+    caret-shape: block; /* More visible cursor shape if supported */
+  }
+  
+  /* Fix positioning for buttons on mobile */
+  .buttons {
+    position: static;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+    gap: 10px;
+  }
+  
+  /* Make buttons more tappable */
+  .buttons button {
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+}
+
+/* Fix for iOS keyboard issues */
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific adjustments */
+  .code-textarea {
+    font-size: 16px; /* Minimum size to prevent zoom on iOS */
+    line-height: 1.4;
+  }
+  
+  body.keyboard-visible .content {
+    /* Adjust layout when keyboard is visible */
+    height: calc(100vh - 300px);
+    overflow: auto;
+  }
+}
+
+/* Mobile textarea styling */
+.mobile-code-textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  background-color: #1c1c1c;
+  color: #f8f8f8;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Fira Code', 'Fira Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  overflow: auto;
+}
+
+.mobile-code-textarea:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+/* Only for mobile screens */
+@media (max-width: 768px) {
+  /* Make content column layout on mobile */
+  .content {
+    flex-direction: column;
+  }
+  
+  /* Give panels full width on mobile */
+  .left, .right, .chat {
+    width: 100% !important;
+    margin-bottom: 15px;
+  }
+  
+  /* Ensure code editor has good height */
+  .code {
+    height: 400px !important; /* Much taller editor on mobile */
+  }
+  
+  /* Hide resize handles on mobile */
+  .resize-handle {
+    display: none;
+  }
+  
+  /* Make sure the textarea takes the full height */
+  .mobile-code-textarea {
+    height: 400px !important;
+    min-height: 400px !important;
+  }
+}
+
+/* Hide scrollbars on desktop while keeping scrolling functionality */
+.code::-webkit-scrollbar,
+.code > div::-webkit-scrollbar,
+.code textarea::-webkit-scrollbar,
+.code pre::-webkit-scrollbar,
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar,
+.chat::-webkit-scrollbar,
+.chat-messages::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.code, .code > div, .code textarea, .code pre,
+.left, .right, .chat, .chat-messages {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Fix cursor positioning and add button margin */
+
+/* Ensure the cursor can reach the end of the code */
+.code, .code > div {
+  padding-bottom: 60px !important; /* Extra space at bottom for cursor */
+}
+
+/* Add margin to buttons to move them up from the bottom edge */
+.buttons {
+  margin-bottom: 15px !important;
+  bottom: 15px !important; /* Move buttons up a bit */
+}
+
+/* For mobile textarea specifically */
+.mobile-code-textarea {
+  padding-bottom: 60px !important; /* Extra padding at bottom */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  /* Move buttons up from the bottom edge on mobile */
+  .buttons {
+    margin-bottom: 20px !important;
+  }
+  
+  /* Even more space at the bottom on mobile */
+  .code, .code > div, .mobile-code-textarea {
+    padding-bottom: 80px !important;
+  }
+}
+
+/* Fix cursor issues on desktop editor */
+
+/* Make sure the editor container allows proper scrolling */
+.code {
+  position: relative;
+  overflow: auto !important;
+  margin-bottom: 60px !important; /* Space for buttons */
+}
+
+/* Force the editor's inner elements to be properly sized */
+.code > div {
+  min-height: 100% !important; 
+  position: relative !important;
+  overflow: visible !important; /* Allow content to extend */
+}
+
+/* Ensure the pre and textarea elements scroll together */
+.code pre, .code textarea {
+  overflow: auto !important;
+  min-height: 100% !important;
+}
+
+/* Ensure the cursor is visible at the bottom */
+.code textarea {
+  caret-color: white !important; /* Make cursor visible */
+  padding-bottom: 80px !important; /* Extra padding at bottom for cursor */
+}
+
+/* Make sure the pre element displays all content */
+.code pre {
+  padding-bottom: 80px !important; /* Match textarea padding */
+}
+
+/* Ensure buttons don't cover the bottom of the editor */
+.buttons {
+  bottom: 15px !important;
+  z-index: 10 !important; /* Keep buttons above editor */
+}
+
+/* Ensure the code container has proper padding around */
+.left {
+  padding-bottom: 15px !important;
+}
+
+/* Enhance editor for handling large amounts of code and fix button positioning */
+
+/* Make the code container take proper height with fixed button placement */
+.left {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Configure code editor container */
+.code {
+  flex: 1 !important;
+  overflow: auto !important;
+  margin-bottom: 60px !important; /* Space for buttons */
+  height: auto !important; /* Let it grow based on content */
+  min-height: calc(100% - 100px) !important; /* Almost full height minus space for buttons */
+}
+
+/* Ensure editor content is properly displayed */
+.code > div,
+.code textarea,
+.code pre {
+  height: auto !important; /* Let content determine height */
+  min-height: 100% !important; /* Take at least full container height */
+  overflow: auto !important; /* Allow scrolling */
+}
+
+/* Position buttons at the bottom */
+.buttons {
+  position: absolute !important;
+  bottom: 15px !important;
+  right: 15px !important;
+  z-index: 100 !important; /* Ensure buttons stay on top */
+  background-color: rgba(26, 26, 26, 0.8) !important; /* Semi-transparent background */
+  padding: 5px !important;
+  border-radius: 5px !important;
+}
+
+/* Apply textarea styles for large content */
+.mobile-code-textarea {
+  height: auto !important;
+  min-height: 400px !important;
+}
+
+/* Improve line rendering for large files */
+.code pre code {
+  line-height: 1.5 !important;
+  tab-size: 2 !important;
+  -moz-tab-size: 2 !important;
+}
+
+/* Force hardware acceleration for better performance with large files */
+.code, .code > div, .code textarea, .code pre {
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+  backface-visibility: hidden !important;
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 768px) {
+  .code {
+    min-height: 400px !important;
+    margin-bottom: 60px !important;
+  }
+  
+  .buttons {
+    position: absolute !important;
+    bottom: 10px !important;
+    right: 10px !important;
+  }
+  
+  .mobile-code-textarea {
+    min-height: 400px !important;
+  }
+}
