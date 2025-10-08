@@ -4,6 +4,7 @@ import prism from "prismjs"
 import Markdown from "react-markdown"
 import Editor from "react-simple-code-editor"
 import axios from "axios"
+import config from './config'
 import './App.css'
 import TypeWriter from './components/TypeWriter'
 
@@ -16,18 +17,18 @@ function App() {
   const [output, setOutput] = useState('')
   const [language, setLanguage] = useState('javascript')
   const [isLoading, setIsLoading] = useState(false)
-  
+
   // For the chat functionality
   const [chatMessage, setChatMessage] = useState('')
   const [chatHistory, setChatHistory] = useState([
     { role: 'assistant', content: 'Hello! I\'m CODG, your coding assistant. I can help you with coding questions or review your code. What would you like to know?' }
   ])
-  
+
   // For resizable panels
   const [leftWidth, setLeftWidth] = useState(37.5)
   const [rightWidth, setRightWidth] = useState(37.5)
   const [chatWidth, setChatWidth] = useState(25)
-  
+
   // Add a state to track if we're on mobile
   const [isMobile, setIsMobile] = useState(false);
 
@@ -36,10 +37,10 @@ function App() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -57,50 +58,50 @@ function App() {
     document.addEventListener('mousemove', resizeRight);
     document.addEventListener('mouseup', stopResize);
   };
-  
+
   const resizeLeft = (e) => {
     const rect = document.querySelector('.content').getBoundingClientRect();
     const containerWidth = rect.width;
     const leftDivWidth = ((e.clientX - rect.left) / containerWidth) * 100;
-    
+
     // Enforce minimum widths (10%)
     if (leftDivWidth < 10 || leftDivWidth > 90 - chatWidth) {
       return;
     }
-    
+
     // Calculate remaining width for other panels
     const remainingWidth = 100 - leftDivWidth - chatWidth;
-    
+
     setLeftWidth(leftDivWidth);
     setRightWidth(remainingWidth);
   };
-  
+
   const resizeRight = (e) => {
     const contentRect = document.querySelector('.content').getBoundingClientRect();
     const rightRect = document.querySelector('.right').getBoundingClientRect();
-    
+
     const containerWidth = contentRect.width;
     const posX = e.clientX - contentRect.left;
     const rightStart = rightRect.left - contentRect.left;
-    
+
     const rightDivWidth = (posX - rightStart) / containerWidth * 100;
     const remainingWidth = 100 - leftWidth - rightDivWidth;
-    
+
     // Enforce minimum widths
     if (rightDivWidth < 10 || remainingWidth < 10) {
       return;
     }
-    
+
     setRightWidth(rightDivWidth);
     setChatWidth(remainingWidth);
   };
-  
+
   const stopResize = () => {
     document.removeEventListener('mousemove', resizeLeft);
     document.removeEventListener('mousemove', resizeRight);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     prism.highlightAll()
   })
 
@@ -129,7 +130,7 @@ function App() {
         }
       }
     };
-    
+
     // Add event listeners for scroll sync
     const textarea = document.getElementById('codeEditor');
     if (textarea) {
@@ -140,18 +141,18 @@ function App() {
 
   // Add a ref to the textarea
   const editorRef = useRef(null);
-  
+
   // Keep the editor optimized for large files
   const handleCodeChange = (newCode) => {
     // Only re-render if content actually changed (performance optimization)
     if (newCode !== code) {
       setCode(newCode);
-      
+
       // For large files, don't auto-scroll unless typing at bottom
       const textarea = document.querySelector('.code textarea');
       if (textarea) {
         const isAtBottom = Math.abs((textarea.scrollHeight - textarea.scrollTop) - textarea.clientHeight) < 50;
-        
+
         // Only auto-scroll if already near bottom
         if (isAtBottom) {
           setTimeout(() => {
@@ -161,40 +162,40 @@ function App() {
       }
     }
   };
-  
+
   // Update highlighting when code changes
   useEffect(() => {
     const highlightedCode = prism.highlight(
-      code, 
-      prism.languages[language] || prism.languages.javascript, 
+      code,
+      prism.languages[language] || prism.languages.javascript,
       language
     );
-    
+
     const highlightElement = document.getElementById('code-highlight');
     if (highlightElement) {
       highlightElement.innerHTML = highlightedCode;
-      
+
       // Sync scroll position
       const textarea = editorRef.current;
       highlightElement.scrollTop = textarea ? textarea.scrollTop : 0;
     }
   }, [code, language]);
-  
+
   // Sync scroll positions between textarea and highlighting
   const handleScroll = () => {
     const textarea = editorRef.current;
     const highlightElement = document.getElementById('code-highlight');
-    
+
     if (textarea && highlightElement) {
       highlightElement.scrollTop = textarea.scrollTop;
       highlightElement.scrollLeft = textarea.scrollLeft;
     }
   };
 
-  async function reviewCode(){ 
+  async function reviewCode() {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:3000/ai/get-review', {
+      const response = await axios.post(`${config.API_BASE_URL}${config.endpoints.REVIEW}`, {
         code: code,
         language: language
       });
@@ -210,7 +211,7 @@ function App() {
   async function getOutput() {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:3000/ai/get-output', {
+      const response = await axios.post(`${config.API_BASE_URL}${config.endpoints.OUTPUT}`, {
         code: code,
         language: language
       });
@@ -226,21 +227,21 @@ function App() {
   async function sendChatMessage(e) {
     e.preventDefault();
     if (!chatMessage.trim()) return;
-    
+
     // Add user message to chat
     const userMessage = { role: 'user', content: chatMessage };
     setChatHistory(prev => [...prev, userMessage]);
     setChatMessage('');
-    
+
     try {
       // Show thinking indicator
       setChatHistory(prev => [...prev, { role: 'assistant', content: '...', isLoading: true }]);
-      
+
       // Call API
-      const response = await axios.post('http://localhost:3000/ai/chat', {
+      const response = await axios.post(`${config.API_BASE_URL}${config.endpoints.CHAT}`, {
         message: userMessage.content
       });
-      
+
       // Remove thinking indicator and add response
       setChatHistory(prev => {
         const newHistory = [...prev];
@@ -264,7 +265,7 @@ function App() {
   useEffect(() => {
     // Check if we're on a mobile device
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
+
     if (isMobile) {
       // Handle virtual keyboard appearing/disappearing
       const handleFocus = () => {
@@ -276,17 +277,17 @@ function App() {
           }
         }, 300);
       };
-      
+
       const handleBlur = () => {
         document.body.classList.remove('keyboard-visible');
       };
-      
+
       // Add listeners to textarea
       const textarea = editorRef.current;
       if (textarea) {
         textarea.addEventListener('focus', handleFocus);
         textarea.addEventListener('blur', handleBlur);
-        
+
         return () => {
           textarea.removeEventListener('focus', handleFocus);
           textarea.removeEventListener('blur', handleBlur);
@@ -303,9 +304,9 @@ function App() {
         e.stopPropagation();
       }
     };
-    
+
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    
+
     return () => {
       document.removeEventListener('touchmove', handleTouchMove);
     };
@@ -320,17 +321,17 @@ function App() {
     <>
       <main>
         <div className="top">
-           <div className="head">
-              <img src="" alt="" />
-              <h1>Code Review</h1>
-            </div>
+          <div className="head">
+            <img src="" alt="" />
+            <h1>Code Review</h1>
+          </div>
         </div>
 
         <div className="content">
           <div className="left" style={{ width: isMobile ? '100%' : `${leftWidth}%` }}>
             <div className="language-selector">
-              <select 
-                value={language} 
+              <select
+                value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
                 <option value="javascript">JavaScript</option>
@@ -341,7 +342,7 @@ function App() {
                 <option value="php">PHP</option>
               </select>
             </div>
-            
+
             <div className="code">
               {isMobile ? (
                 <textarea
@@ -353,22 +354,23 @@ function App() {
               ) : (
                 <Editor
                   value={code}
-                  onValueChange={handleCodeChange}
+                  onValueChange={isMobile ? setCode : handleCodeChange}
                   highlight={code => prism.highlight(code, prism.languages[language] || prism.languages.javascript, language)}
-                  padding={10}
+                  padding={isMobile ? 12 : 10}
                   tabSize={2}
                   insertSpaces={true}
                   style={{
                     fontFamily: '"Fira code", "Fira Mono", monospace',
-                    fontSize: 16,
+                    fontSize: isMobile ? 14 : 16,
                     lineHeight: 1.5,
                     borderRadius: 10,
                     border: "1px solid #ddd",
+                    minHeight: isMobile ? '400px' : 'auto',
                   }}
                 />
               )}
             </div>
-            
+
             <div className="buttons">
               <button onClick={reviewCode} disabled={isLoading}>
                 {isLoading && (review !== '') ? 'Loading...' : 'Review'}
@@ -378,9 +380,9 @@ function App() {
               </button>
             </div>
           </div>
-          
+
           {!isMobile && <div className="resize-handle" onMouseDown={startResizeLeft}></div>}
-          
+
           <div className="right" style={{ width: isMobile ? '100%' : `${rightWidth}%` }}>
             {isLoading ? (
               <div className="loading">Processing your request...</div>
@@ -390,9 +392,9 @@ function App() {
               <div className="placeholder">Your code review or output will appear here</div>
             )}
           </div>
-          
+
           {!isMobile && <div className="resize-handle" onMouseDown={startResizeRight}></div>}
-          
+
           <div className="chat" style={{ width: isMobile ? '100%' : `${chatWidth}%` }}>
             <div className="chat-messages">
               {chatHistory.map((msg, index) => (
@@ -402,14 +404,14 @@ function App() {
                       <span></span><span></span><span></span>
                     </div>
                   ) : (
-                    <div className="message-content">{msg.content}</div>
+                    <div className="message-content"><Markdown>{msg.content}</Markdown></div>
                   )}
                 </div>
               ))}
             </div>
             <form className="chat-input" onSubmit={sendChatMessage}>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Ask CODG a question..."
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}

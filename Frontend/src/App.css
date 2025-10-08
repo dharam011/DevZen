@@ -995,7 +995,7 @@ main {
   
   /* Code editor inside left panel */
   .code {
-    height: 300px !important; /* Taller editor on mobile */
+    height: 800px !important; /* Taller editor on mobile */
   }
   
   /* Right panel (results) */
